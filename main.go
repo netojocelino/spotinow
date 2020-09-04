@@ -26,28 +26,38 @@ func main () {
 
 	command := os.Args[1]
 
-	auth := spotify.NewAuthenticator(redirectURL, spotify.ScopeUserReadPrivate, spotify.ScopeUserLibraryRead)
+    auth := spotify.NewAuthenticator(redirectURL, spotify.ScopeUserReadPrivate,
+        spotify.ScopeUserLibraryRead, spotify.ScopeUserReadCurrentlyPlaying)
 	url := auth.AuthURL(state)
 
-    fmt.Printf("%s %s", "Acesse a URl em :: ", url)
-    fmt.Println("")
+    fmt.Printf("%s %s\n\n", "Acesse a URl em :: ", url)
 
     http.HandleFunc("/callback", func (w http.ResponseWriter, r *http.Request) {
-        fmt.Println("Recebido! :D") 
-        fmt.Fprintf(w, "Autorizado com sucesso.")
-    
+        token, err := auth.Token(state, r)
+        
+        if(err != nil) {
+            fmt.Printf("Erro ao gerar token: %s\n", err)
+            http.Error(w, "Não foi possível retornar o token\n", http.StatusNotFound)
+        } else {
+            fmt.Fprintf(w, "Autorizado com sucesso.\n")
+            client := auth.NewClient(token)
+            ch <- &client
+        }
+
     })
     go http.ListenAndServe(":7521", nil)
 
-    fmt.Println("Esperando Spotify Client")
     
     client := <-ch
-	fmt.Println(client)
-
 
 	switch command {
 	case "now":
-		fmt.Println("O que está tocando agora: ")
+        currentlyPlaying, currentlyPlayingError := client.PlayerCurrentlyPlaying()
+        if (currentlyPlayingError != nil) {
+            fmt.Println(currentlyPlayingError)
+            return            
+        }
+        fmt.Printf("Tocando: %s - %s", currentlyPlaying.Item.Name, currentlyPlaying.Item.Artists[0].Name)
 
 	default:
 		fmt.Println("Comando não implementado")
