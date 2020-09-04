@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"net/http"
+    "os/exec"
+    "runtime"
 
 	"github.com/zmb3/spotify"
 )
@@ -15,6 +17,24 @@ var (
 )
 
 
+
+func openURL(url string) error {
+    var cmd string
+    var args []string
+
+    switch runtime.GOOS {
+    case "windows":
+        cmd = "cmd"
+        args = []string{"/c", "start"}
+    case "darwin":
+        cmd = "open"
+    default: // "linux", "freebsd", "openbsd", "netbsd"
+        // cmd = "xdg-open"
+        cmd = "firefox"
+    }
+    args = append(args, url)
+    return exec.Command(cmd, args...).Start()
+}
 
 func main () {
 
@@ -31,6 +51,7 @@ func main () {
 	url := auth.AuthURL(state)
 
     fmt.Printf("%s %s\n\n", "Acesse a URl em :: ", url)
+    go openURL(url)
 
     http.HandleFunc("/callback", func (w http.ResponseWriter, r *http.Request) {
         token, err := auth.Token(state, r)
@@ -57,7 +78,7 @@ func main () {
             fmt.Println(currentlyPlayingError)
             return            
         }
-        fmt.Printf("Tocando: %s - %s", currentlyPlaying.Item.Name, currentlyPlaying.Item.Artists[0].Name)
+        fmt.Printf("Tocando: %s - %s \n", currentlyPlaying.Item.Name, currentlyPlaying.Item.Artists[0].Name)
 
 	default:
 		fmt.Println("Comando não implementado")
