@@ -1,6 +1,6 @@
 # CLI SpotiNow
 
-Uma `cli` seguindo os passos da [live da Bianca Rosa](https://www.twitch.tv/bianca_rosa_/video/718526926).
+Uma `cli` seguindo os passos da live da Bianca Rosa [Vídeo 1](https://www.twitch.tv/bianca_rosa_/video/718526926), [Vídeo 2](https://www.twitch.tv/videos/725631665).
 
 
 ## Comandos
@@ -8,3 +8,6 @@ Uma `cli` seguindo os passos da [live da Bianca Rosa](https://www.twitch.tv/bian
  - now
 
 
+ ## Recursos
+
+ - Salvar Token na memória 
