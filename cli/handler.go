@@ -13,7 +13,7 @@ func HandlerCommandLineInput(client *spotify.Client, command string) {
 	case "now":
 		currentlyPlaying, currentlyPlayingError := client.PlayerCurrentlyPlaying()
 		if currentlyPlayingError != nil {
-			fmt.Println(currentlyPlayingError)
+			fmt.Printf("%s\n", "Não foi identificado nenhuma música sendo reproduzida.")
 			return
 		}
 
