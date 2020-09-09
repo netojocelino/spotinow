@@ -16,7 +16,23 @@ func HandlerCommandLineInput(client *spotify.Client, command string) {
 			fmt.Println(currentlyPlayingError)
 			return
 		}
-		fmt.Printf("Tocando: %s - %s \n", currentlyPlaying.Item.Name, currentlyPlaying.Item.Artists[0].Name)
+
+		artistsName := "- "
+
+		artistsList := currentlyPlaying.Item.Artists
+		artistsListLen := len(artistsList)
+
+		for indexArtist, artist := range artistsList {
+			artistsName += artist.Name
+			if indexArtist < (artistsListLen - 2) {
+				artistsName += ", "
+			} else if indexArtist < (artistsListLen - 1) {
+				artistsName += " e "
+			} else {
+				artistsName += "."
+			}
+		}
+		fmt.Printf("Tocando: %s %s \n", currentlyPlaying.Item.Name, artistsName)
 
 	default:
 		fmt.Println("Comando não implementado")
