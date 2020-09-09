@@ -34,6 +34,13 @@ func HandlerCommandLineInput(client *spotify.Client, command string) {
 		}
 		fmt.Printf("Tocando: %s %s \n", currentlyPlaying.Item.Name, artistsName)
 
+	case "user":
+		user, userErr := client.CurrentUser()
+		if userErr != nil {
+			fmt.Println(userErr)
+			return
+		}
+		fmt.Printf("%s <%s> [%s]\n", user.DisplayName, user.Product, user.ID)
 	default:
 		fmt.Println("Comando não implementado")
 	}

@@ -20,7 +20,8 @@ var (
 // GetClient using OAuth2 and return *spotify.Client
 func GetClient() *spotify.Client {
 	auth := spotify.NewAuthenticator(redirectURL, spotify.ScopeUserReadPrivate,
-		spotify.ScopeUserLibraryRead, spotify.ScopeUserReadCurrentlyPlaying)
+		spotify.ScopeUserLibraryRead, spotify.ScopeUserReadCurrentlyPlaying,
+		spotify.ScopeUserReadEmail)
 
 	fOpen, fOpenErr := os.Open(jsonFileName)
 
