@@ -6,7 +6,6 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/netojocelino/spotinow/authenticate"
 	"github.com/netojocelino/spotinow/cli"
 )
 
@@ -38,8 +37,6 @@ func main() {
 
 	command := os.Args[1]
 
-	client := authenticate.GetClient()
-
-	cli.HandlerCommandLineInput(client, command)
+	cli.HandlerCommandLineInput(command)
 
 }

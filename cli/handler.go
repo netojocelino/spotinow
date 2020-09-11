@@ -3,16 +3,18 @@ package cli
 import (
 	"fmt"
 
-	"github.com/zmb3/spotify"
+	"github.com/netojocelino/spotinow/authenticate"
 )
 
 // HandlerCommandLineInput handler with command and do magic
-func HandlerCommandLineInput(client *spotify.Client, command string) {
+func HandlerCommandLineInput(command string) {
+
+	client := authenticate.GetClient()
 
 	switch command {
 	case "now":
 		currentlyPlaying, currentlyPlayingError := client.PlayerCurrentlyPlaying()
-		if currentlyPlayingError != nil {
+		if (currentlyPlayingError != nil) || (currentlyPlaying.Item == nil) {
 			fmt.Printf("%s\n", "Não foi identificado nenhuma música sendo reproduzida.")
 			return
 		}
